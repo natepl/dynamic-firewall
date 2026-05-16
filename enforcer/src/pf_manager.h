@@ -4,15 +4,6 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
-#include <sys/types.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
-#include <sys/fcntl.h>
-#include <net/if.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-// Note: macOS requires specific network headers for pf
-#include <net/pfvar.h>
 
 class PfManager {
 public:
@@ -29,13 +20,10 @@ public:
     std::vector<std::string> getBlockedIps();
 
 private:
-    int dev_fd;
     std::string table_name;
 
-    // Helper to open /dev/pf
-    void openDevice();
-    // Helper to close /dev/pf
-    void closeDevice();
+    // Helper to execute pfctl shell commands
+    bool executePfctl(const std::string& command);
 };
 
 #endif // PF_MANAGER_H
